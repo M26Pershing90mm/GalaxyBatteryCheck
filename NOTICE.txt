@@ -1,0 +1,19 @@
+Galaxy Battery Check (Unofficial) / 갤럭시 배터리 체크 (비공식)
+Developer: Sakai
+Copyright Holder: 꿈을꾸는 파랑새
+© 2026 꿈을꾸는 파랑새. All rights reserved.
+Blog: https://wezard4u.tistory.com/
+Voluntary Donations (Korean, Toonation): https://toon.at/donate/637833976686140024
+Voluntary Donations (English/Japanese, Ko-fi): https://ko-fi.com/sakai38666
+Independent read-only battery diagnostic utility based on Android Debug Bridge (ADB).
+Independently developed; not affiliated with, endorsed, certified, or sponsored by Samsung Electronics.
+Not developed, endorsed, or officially supported by Google.
+Samsung and Galaxy are trademarks of Samsung Electronics.
+Donations are optional. External donation providers remain responsible for their own payment handling.
+비공식 소프트웨어 안내 / Unofficial software / 非公式ソフトウェア
+한국어: Galaxy Battery Check는 개인 개발자가 제작한 비공식 배터리 정보 확인 도구입니다. 삼성전자와 제휴하거나 삼성전자의 승인·인증·후원을 받은 프로그램이 아닙니다. Samsung 및 Galaxy는 삼성전자의 상표입니다.
+English: Galaxy Battery Check is an independently developed, unofficial battery information utility. This project is not affiliated with, endorsed, certified, or sponsored by Samsung Electronics. Samsung and Galaxy are trademarks of Samsung Electronics.
+日本語: Galaxy Battery Checkは、個人開発者が制作した非公式のバッテリー情報確認ツールです。本プロジェクトはSamsung Electronicsと提携関係になく、同社による承認・認定・後援も受けていません。SamsungおよびGalaxyはSamsung Electronicsの商標です。
+본 프로그램의 배터리 진단 결과는 참고용입니다. 정확한 진단은 삼성전자 서비스센터를 방문해 주세요.
+English: Caution: Battery diagnostic results from this program are for reference only. For an accurate assessment, please contact Samsung Support or a Samsung-authorized repair provider.
+日本語: 注意：本プログラムのバッテリー診断結果は参考情報です。正確なバッテリー状態を確認したい場合は、Samsungサポート、またはご利用の通信事業者の修理窓口にご相談ください。
