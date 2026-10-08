@@ -4,7 +4,7 @@
 
 [English](#english) | [한국어](#한국어)
 
-![Galaxy Battery Check v1.4.3 screenshot](screenshots/galaxy-battery-check.png)
+![Galaxy Battery Check v1.4.3 screenshot](galaxy-battery-check.png)
 
 *Actual application screenshot on Windows. Displayed values depend on the connected device and firmware.*
 
