@@ -1,129 +1,458 @@
 # Galaxy Battery Check
 
-**v1.4.3 · Windows · Python · ADB · 비공식 프로그램**
+**v1.4.3 | Windows | Python | ADB | Unofficial**
 
-Galaxy Battery Check는 삼성 갤럭시 스마트폰이 ADB(Android Debug Bridge)를 통해 제공하는 배터리 정보를 확인하는 Windows용 프로그램입니다. BSOH, ASOC, 충전 사이클, 배터리 온도 등을 조회하고 결과를 JSON 파일로 저장할 수 있습니다. 루트 권한은 필요하지 않습니다.
+[English](#english) | [한국어](#한국어)
 
-> **비공식 프로그램 안내**  
-> 개인 개발자가 제작한 도구이며, 삼성전자와 제휴하거나 삼성전자로부터 승인·인증·후원을 받은 프로그램이 아닙니다. 배터리 정보를 조회하는 용도로만 사용하며 공식 배터리 진단을 대신하지 않습니다.
+![Galaxy Battery Check v1.4.3 screenshot](screenshots/galaxy-battery-check.png)
 
-## 실행 화면
+*Actual application screenshot on Windows. Displayed values depend on the connected device and firmware.*
 
-![Galaxy Battery Check v1.4.3 실행 화면](screenshots/galaxy-battery-check.png)
+---
 
-위 화면은 Windows에서 실제로 실행한 예시입니다. 표시되는 수치는 연결 기기와 운영체제 버전에 따라 다릅니다.
+## English
 
-## 주요 기능
+Galaxy Battery Check is an unofficial Windows utility that displays battery information reported by Samsung Galaxy devices through ADB (Android Debug Bridge).
 
-- **BSOH / ASOC 조회:** 기기가 공개한 값만 표시합니다. 지원하지 않거나 읽을 수 없는 항목은 `확인 불가`로 표시합니다.
-- **배터리 상세 정보:** 충전량, 온도, 기록된 최고 온도, 최초 사용 기록일 및 충전 사이클 등 확인 가능한 항목을 표시합니다.
-- **용량 참고값:** 정격 용량(mAh)을 입력하면 남은 전하량 등을 바탕으로 간이 추정치를 계산합니다. 실측 용량이 아닙니다.
-- **ADB 기기 선택:** 연결된 기기를 검색하고 ADB 실행 파일 경로를 지정할 수 있습니다.
-- **JSON 저장:** 조회한 정보를 파일로 보관할 수 있습니다.
-- **다국어 GUI:** Windows 표시 언어를 감지해 한국어·영어·일본어 중 하나를 선택합니다. 해당하지 않는 언어에서는 영어를 사용하며, 프로그램에서도 직접 변경할 수 있습니다.
+It can display BSOH, ASOC, charge cycles, battery temperature, and other available data, with an option to save results as JSON. Root access is not required.
 
-## 실행 환경
+> **Unofficial software**
+>
+> This project is independently developed and is not affiliated with, endorsed, certified, or sponsored by Samsung Electronics. It is not a substitute for Samsung's official battery diagnostics.
 
-- Windows 10 또는 Windows 11
-- Python 3.10 이상
-- [Android SDK Platform-Tools (ADB)](https://developer.android.com/tools/releases/platform-tools)
-- USB 디버깅을 허용한 삼성 갤럭시 스마트폰 및 USB 데이터 케이블
+### Features
 
-Python 소스 코드 배포본입니다. **독립 실행형 EXE와 ADB 실행 파일은 포함되어 있지 않습니다.** 별도 Python 패키지 설치 없이 표준 라이브러리로 실행됩니다.
+- **BSOH and ASOC:** Displays reported values when available. Unsupported or inaccessible fields are shown as unavailable.
+- **Battery details:** Shows available data such as charge level, temperature, recorded maximum temperature, first-use date, and charge cycle count.
+- **Capacity estimates:** Uses an optional rated capacity (mAh) and available battery data to produce rough reference estimates, not measured battery capacity.
+- **ADB device selection:** Supports selecting an ADB executable and discovering connected devices.
+- **JSON export:** Saves collected information to a JSON file.
+- **Multilingual GUI:** Korean, English, and Japanese, with automatic Windows display-language detection and manual selection.
 
-## 실행 방법
+### Requirements and Downloads
 
-1. Windows에 Python 3.10 이상을 설치합니다.
-2. 위 링크에서 Android SDK Platform-Tools를 내려받아 압축을 풉니다.
-3. 휴대전화에서 *개발자 옵션 → USB 디버깅*을 켜고 PC에 연결합니다.
-4. 휴대전화에 나타나는 USB 디버깅 허용 창에서 해당 PC를 승인합니다.
-5. `galaxy battery check.pyw`를 실행합니다.
-6. GUI에서 `adb.exe` 경로를 지정하고 **기기 검색 → 연결 기기 선택 → 배터리 조회** 순서로 진행합니다.
+| Component | Required? | Official Download |
+| --- | --- | --- |
+| Windows 10 / Windows 11 | Yes | — |
+| Python 3.10 or later, including Tkinter | Yes | [Python.org](https://www.python.org/downloads/) |
+| Android SDK Platform-Tools (ADB) | Yes | [Android Developers](https://developer.android.com/tools/releases/platform-tools) |
+| Samsung Android USB Driver for Windows | If Windows does not recognize the phone | [Samsung Developer](https://developer.samsung.com/android-usb-driver) |
+| Samsung Galaxy phone and USB data cable | Yes | — |
 
-예를 들어 Platform-Tools를 `C:\platform-tools`에 풀었다면 ADB 실행 파일은 `C:\platform-tools\adb.exe`입니다. ADB가 이미 환경 변수 `PATH`에 등록되어 있다면 경로를 직접 선택하지 않아도 됩니다.
+This repository provides the **Python source version**. It does not include a standalone Windows executable or `adb.exe`.
 
-명령 프롬프트나 PowerShell에서 GUI를 시작하려면 다음 명령어를 사용할 수 있습니다.
+Android Studio, root access, and additional third-party Python packages are not required.
+
+### Installation and Setup (Windows)
+
+**1. Install Python**
+
+1. Visit the [official Python downloads page](https://www.python.org/downloads/) and install Python for Windows.
+2. Make sure Python 3.10 or later is installed.
+3. Open PowerShell and verify the installation.
+
+```powershell
+python --version
+python -m tkinter
+```
+
+The Tkinter command should open a small test window.
+
+**2. Install Android SDK Platform-Tools (ADB)**
+
+1. Visit the [official Android SDK Platform-Tools page](https://developer.android.com/tools/releases/platform-tools).
+2. Select **Download SDK Platform-Tools for Windows**.
+3. Extract the downloaded ZIP file.
+4. Locate `adb.exe`, for example:
+
+```text
+C:\platform-tools\adb.exe
+```
+
+Verify ADB from PowerShell:
+
+```powershell
+& "C:\platform-tools\adb.exe" version
+```
+
+Adding ADB to the system PATH is optional because Galaxy Battery Check allows you to select the executable directly.
+
+**3. Enable USB Debugging**
+
+On your Samsung Galaxy device:
+
+1. Open **Settings → About phone → Software information**.
+2. Tap **Build number** seven times.
+3. Enter your device credentials if prompted.
+4. Open **Settings → Developer options**.
+5. Enable **USB debugging**.
+6. Connect the phone to your PC using a USB data cable.
+7. Approve the USB debugging authorization prompt on the phone.
+
+**4. Verify the ADB Connection**
+
+Open PowerShell and run:
+
+```powershell
+& "C:\platform-tools\adb.exe" devices
+```
+
+Possible results:
+
+- `device` — Device connected and authorized.
+- `unauthorized` — Approve USB debugging on the phone.
+- No device listed — Check the USB cable, USB port, and drivers.
+
+If Windows cannot recognize the phone, install the [Samsung Android USB Driver for Windows](https://developer.samsung.com/android-usb-driver).
+
+**5. Run Galaxy Battery Check**
+
+1. Download the project files from GitHub.
+2. Extract the files into the same directory.
+3. Double-click `galaxy battery check.pyw`.
+4. Select the location of `adb.exe` in the application.
+5. Find and select the connected Samsung Galaxy device.
+6. Run the battery information query.
+7. Save the results as JSON if needed.
+
+Alternatively, start the GUI using PowerShell:
 
 ```powershell
 pythonw "galaxy battery check.pyw"
 ```
 
-바탕화면 바로가기는 `create desktop shortcut.cmd`로 생성할 수 있습니다. 바로가기 역시 설치된 Python으로 소스 코드를 실행합니다.
+### Command-Line Usage
 
-### 명령줄 실행
+The application also provides a command-line interface.
+
+Display version information:
 
 ```powershell
 python "galaxy battery check.py" --version
+```
+
+Display battery information in JSON format:
+
+```powershell
 python "galaxy battery check.py" --json
+```
+
+Save a battery report:
+
+```powershell
 python "galaxy battery check.py" --save "battery report.json"
 ```
 
-여러 기기가 연결되어 있으면 `--serial` 옵션으로 대상 기기를 지정해야 합니다. ADB 경로는 `--adb` 옵션으로도 설정할 수 있습니다.
+Use `--adb` to specify the ADB executable and `--serial` to select a device when multiple devices are connected.
 
-## BSOH·ASOC 값이 나오지 않을 때
+The included `create desktop shortcut.cmd` can create a desktop shortcut for launching the Python application.
 
-프로그램은 주로 `adb shell dumpsys battery` 출력에서 BSOH(`mSavedBatteryBsoh`)와 ASOC(`mSavedBatteryAsoc`)를 읽습니다. ASOC는 기기에서 접근 가능한 경우 일부 sysfs 항목도 확인합니다.
+### BSOH and ASOC Limitations
 
-One UI 7을 포함해 Android·One UI 버전과 기기 모델에 따라 제공되는 정보가 다릅니다. BSOH 값이 없다면 임의의 수치를 만들어 표시하지 않으며 `확인 불가`로 처리합니다. ASOC가 표시되어도 BSOH와 동일한 의미로 해석해서는 안 됩니다.
-
-ADB 연결 상태를 확인하려면 다음 명령어를 실행합니다.
+Galaxy Battery Check primarily retrieves battery information using:
 
 ```powershell
-adb devices
+adb shell dumpsys battery
 ```
 
-`unauthorized`가 표시되면 휴대전화 화면에서 USB 디버깅 권한을 승인해야 합니다. 연결 기기가 보이지 않으면 USB 케이블, 드라이버 및 ADB 경로를 확인하세요.
+The tool attempts to read fields including:
 
-## 지원 언어 및 후원
+```text
+mSavedBatteryBsoh
+mSavedBatteryAsoc
+```
 
-| GUI 언어 | 후원 페이지 |
+The availability of these values depends on the device model, Android version, Samsung One UI version, and firmware.
+
+This includes One UI 7 devices.
+
+If BSOH is not reported by the device, the application displays an unavailable status instead of generating an artificial BSOH value.
+
+**BSOH and ASOC are different indicators and should not be treated as equivalent measurements.**
+
+The information displayed by this application is intended for reference and does not replace official battery diagnostics.
+
+### Troubleshooting
+
+If the GUI does not open, verify Python and Tkinter.
+
+To view Python startup errors, run:
+
+```powershell
+python "galaxy battery gui.py"
+```
+
+If the device is not detected, verify its ADB connection and USB debugging authorization.
+
+### Release File and Checksums
+
+The following information applies specifically to:
+
+**GalaxyBatteryCheck v1.4.3 Unofficial.zip**
+
+| Item | Value |
 | --- | --- |
-| 한국어 | [투네이션](https://toon.at/donate/637833976686140024) |
-| English | [Ko-fi](https://ko-fi.com/sakai38666) |
-| 日本語 | [Ko-fi](https://ko-fi.com/sakai38666) |
-
-후원은 선택 사항입니다. 프로그램 하단의 제작자 이름을 클릭하면 [개발자 블로그](https://wezard4u.tistory.com/)로 이동합니다.
-
-## 진단 결과에 대한 주의사항
-
-배터리 수치와 추정값은 참고용입니다. 정확한 상태 확인이나 수리가 필요하다면 삼성전자 공식 서비스센터 또는 해당 지역의 공식 지원·수리 창구를 이용하세요. 프로그램에서 조회한 JSON에는 기기 식별 정보가 포함될 수 있으므로 외부에 공개하기 전에 내용을 확인하는 것이 좋습니다.
-
-**English:** This is an independent, unofficial battery information utility. It is not affiliated with, endorsed, certified, or sponsored by Samsung Electronics. Results are for reference only. For an accurate assessment, contact Samsung Support or a Samsung-authorized repair provider.
-
-**日本語:** 本ソフトウェアは個人開発の非公式ツールであり、Samsung Electronicsとの提携・承認・認定・後援関係はありません。診断結果は参考情報です。正確な状態の確認はSamsungサポート、またはご利用の通信事業者の修理窓口にご相談ください。
-
-Samsung 및 Galaxy는 삼성전자의 상표입니다. 제품명은 지원 대상 기기를 설명하기 위해 사용했습니다.
-
-## 배포 파일 및 체크섬
-
-배포 ZIP 파일 정보입니다. 아래 체크섬은 실제 제공된 파일에서 검증했습니다.
-
-| 항목 | 값 |
-| --- | --- |
-| 파일명 | `GalaxyBatteryCheck v1.4.3 Unofficial.zip` |
-| 파일 크기 | 160,110 bytes (약 156.4 KiB) |
+| File size | 160,110 bytes |
 | MD5 | `913215e82baae2d2c1e5e69067fccf27` |
 | SHA-1 | `bae73577aef5d6ef0277ce5e9dcea5e0fdc9edd8` |
 | SHA-256 | `fe049082707e95be2a265458847000bf14c2323ef2720745bfd04464fad0b0e9` |
 
-**해시 검증:** 제공된 배포 ZIP 원본으로 MD5, SHA-1, SHA-256 일치를 확인했습니다. GitHub의 `Source code (zip)` 자동 생성 파일이나 이 저장소의 소스 업로드용 ZIP과는 별개의 파일입니다.
-
-### VirusTotal 분석 결과
-
-[Galaxy Battery Check v1.4.3 — VirusTotal 파일 분석](https://www.virustotal.com/gui/file/fe049082707e95be2a265458847000bf14c2323ef2720745bfd04464fad0b0e9/details)
-
-분석 결과는 참고 자료이며 파일의 안전성을 보증하지 않습니다.
-
-Windows PowerShell에서 내려받은 ZIP의 SHA-256 해시는 다음 명령어로 확인할 수 있습니다.
+Verify the SHA-256 checksum using PowerShell:
 
 ```powershell
 Get-FileHash -Algorithm SHA256 ".\GalaxyBatteryCheck v1.4.3 Unofficial.zip"
 ```
 
-## 제작자 및 저작권
+These checksums do not apply to GitHub's automatically generated source archives.
 
-- 개발자: **Sakai**
-- 블로그: <https://wezard4u.tistory.com/>
-- 저작권: **© 2026 꿈을꾸는 파랑새. All rights reserved.**
+**VirusTotal Analysis**
 
-별도의 오픈소스 라이선스는 부여하지 않았습니다. 소스 코드를 열람할 수 있다는 사실만으로 수정·재배포·상업적 사용 권한이 허용되는 것은 아닙니다. 자세한 사항은 [`NOTICE.txt`](NOTICE.txt)를 참고하세요.
+[View the file analysis on VirusTotal](https://www.virustotal.com/gui/file/fe049082707e95be2a265458847000bf14c2323ef2720745bfd04464fad0b0e9/details)
+
+VirusTotal scan results are provided for reference and do not guarantee that a file is free from malicious software.
+
+### Support
+
+Galaxy Battery Check is independently developed and maintained.
+
+- Developer: **Sakai**
+- Blog: https://wezard4u.tistory.com/
+- Toonation: https://toon.at/donate/637833976686140024
+- Ko-fi: https://ko-fi.com/sakai38666
+
+Donations are entirely optional.
+
+### Copyright and Disclaimer
+
+**© 2026 꿈을꾸는 파랑새. All rights reserved.**
+
+Samsung and Galaxy are trademarks of Samsung Electronics.
+
+This application is an independent utility and is not affiliated with Samsung Electronics.
+
+Battery diagnostic results are provided for informational purposes only. For an accurate assessment, please contact Samsung Support or a Samsung-authorized repair provider.
+
+No open-source license has been granted. Public access to the source code does not automatically grant permission for modification, redistribution, or commercial use.
+
+See `NOTICE.txt` for additional information.
+
+---
+
+## 한국어
+
+Galaxy Battery Check는 삼성 갤럭시 스마트폰이 ADB(Android Debug Bridge)를 통해 제공하는 배터리 정보를 확인할 수 있도록 제작한 Windows용 비공식 프로그램입니다.
+
+BSOH, ASOC, 충전 사이클, 배터리 온도 등의 정보를 조회하고 결과를 JSON 파일로 저장할 수 있습니다.
+
+루트 권한은 필요하지 않습니다.
+
+> **비공식 프로그램 안내**
+>
+> 이 프로그램은 개인 개발자가 제작한 소프트웨어로, 삼성전자와 제휴하거나 삼성전자로부터 승인·인증·후원을 받은 제품이 아닙니다. 삼성전자의 공식 배터리 진단을 대체하지 않습니다.
+
+### 주요 기능
+
+- **BSOH / ASOC 조회:** 기기에서 제공하는 값을 표시하며, 조회할 수 없는 항목은 `확인 불가`로 처리합니다.
+- **배터리 정보:** 충전량, 배터리 온도, 기록된 최고 온도, 최초 사용 기록일, 충전 사이클 등 확인 가능한 정보를 표시합니다.
+- **배터리 용량 참고값:** 정격 용량(mAh)과 이용 가능한 배터리 데이터를 바탕으로 간이 추정값을 계산합니다. 실제 측정한 배터리 용량이 아닙니다.
+- **ADB 기기 검색:** 연결된 기기를 검색하고 사용할 기기를 선택할 수 있습니다.
+- **JSON 저장:** 조회 결과를 JSON 파일로 저장할 수 있습니다.
+- **다국어 지원:** 한국어, 영어, 일본어를 지원하며 Windows 표시 언어 자동 감지와 수동 변경 기능을 제공합니다.
+
+### 실행 환경 및 필요한 프로그램
+
+| 항목 | 필요 여부 | 공식 다운로드 |
+| --- | --- | --- |
+| Windows 10 / Windows 11 | 필수 | — |
+| Python 3.10 이상 (Tkinter 포함) | 필수 | [Python 공식 사이트](https://www.python.org/downloads/) |
+| Android SDK Platform-Tools (ADB) | 필수 | [Google 공식 사이트](https://developer.android.com/tools/releases/platform-tools) |
+| Samsung Android USB Driver | 기기 인식에 문제가 있을 때 | [Samsung Developer](https://developer.samsung.com/android-usb-driver) |
+| 삼성 갤럭시 스마트폰 및 USB 데이터 케이블 | 필수 | — |
+
+이 저장소에서는 Python 소스 코드 버전을 제공합니다.
+
+독립 실행형 Windows EXE 파일과 ADB 실행 파일은 포함되어 있지 않습니다.
+
+Android Studio 전체 설치와 스마트폰 루팅은 필요하지 않습니다.
+
+### 설치 및 실행 방법
+
+**1. Python 설치**
+
+1. [Python 공식 다운로드 페이지](https://www.python.org/downloads/)에 접속합니다.
+2. Windows용 Python 3.10 이상을 설치합니다.
+3. PowerShell을 실행하여 설치 상태를 확인합니다.
+
+```powershell
+python --version
+python -m tkinter
+```
+
+Tkinter가 정상 설치되어 있다면 테스트 창이 열립니다.
+
+**2. Android SDK Platform-Tools 설치**
+
+1. [Android SDK Platform-Tools 공식 사이트](https://developer.android.com/tools/releases/platform-tools)에 접속합니다.
+2. Windows용 Platform-Tools ZIP 파일을 다운로드합니다.
+3. 파일을 원하는 위치에 압축 해제합니다.
+4. 압축 해제한 폴더에서 `adb.exe`를 확인합니다.
+
+예시 경로:
+
+```text
+C:\platform-tools\adb.exe
+```
+
+PowerShell에서 버전을 확인합니다.
+
+```powershell
+& "C:\platform-tools\adb.exe" version
+```
+
+Galaxy Battery Check에서는 ADB 실행 파일의 경로를 직접 지정할 수 있으므로 환경 변수 PATH 설정은 필수가 아닙니다.
+
+**3. 갤럭시 스마트폰 USB 디버깅 활성화**
+
+1. **설정 → 휴대전화 정보 → 소프트웨어 정보**로 이동합니다.
+2. **빌드번호**를 7번 연속 누릅니다.
+3. **설정 → 개발자 옵션**으로 이동합니다.
+4. **USB 디버깅**을 활성화합니다.
+5. USB 데이터 케이블로 PC와 연결합니다.
+6. 스마트폰에 표시되는 USB 디버깅 허용 요청을 승인합니다.
+
+**4. ADB 연결 확인**
+
+PowerShell에서 다음 명령어를 실행합니다.
+
+```powershell
+& "C:\platform-tools\adb.exe" devices
+```
+
+연결 상태에 따라 다음 결과가 표시됩니다.
+
+- `device` — 정상 연결
+- `unauthorized` — USB 디버깅 승인 필요
+- 기기가 표시되지 않음 — USB 케이블, 포트, 드라이버 점검 필요
+
+Windows에서 기기를 제대로 인식하지 못한다면 [Samsung Android USB Driver](https://developer.samsung.com/android-usb-driver)를 설치한 후 다시 연결합니다.
+
+**5. Galaxy Battery Check 실행**
+
+1. GitHub에서 프로젝트 파일을 다운로드합니다.
+2. 소스 파일을 동일한 폴더에 압축 해제합니다.
+3. `galaxy battery check.pyw` 파일을 실행합니다.
+4. GUI에서 `adb.exe` 경로를 지정합니다.
+5. 연결된 갤럭시 스마트폰을 검색하고 선택합니다.
+6. 배터리 정보 조회 기능을 실행합니다.
+7. 필요한 경우 JSON 파일로 저장합니다.
+
+PowerShell에서 직접 실행할 수도 있습니다.
+
+```powershell
+pythonw "galaxy battery check.pyw"
+```
+
+### 명령줄 실행 방법
+
+버전 확인:
+
+```powershell
+python "galaxy battery check.py" --version
+```
+
+배터리 정보를 JSON 형식으로 출력:
+
+```powershell
+python "galaxy battery check.py" --json
+```
+
+배터리 정보를 파일로 저장:
+
+```powershell
+python "galaxy battery check.py" --save "battery report.json"
+```
+
+`--adb` 옵션으로 ADB 실행 파일 경로를 지정할 수 있으며, 여러 기기가 연결되어 있다면 `--serial` 옵션을 사용해 대상 기기를 선택할 수 있습니다.
+
+### One UI 및 BSOH / ASOC 관련 사항
+
+프로그램은 주로 다음 명령어에서 배터리 관련 정보를 조회합니다.
+
+```powershell
+adb shell dumpsys battery
+```
+
+조회하는 주요 항목에는 다음 값이 포함됩니다.
+
+```text
+mSavedBatteryBsoh
+mSavedBatteryAsoc
+```
+
+One UI 7을 포함하여 스마트폰 모델, Android 버전, One UI 버전 및 펌웨어에 따라 반환되는 정보가 다를 수 있습니다.
+
+BSOH 값이 제공되지 않는 경우 프로그램은 해당 값을 임의로 생성하지 않으며 `확인 불가`로 표시합니다.
+
+BSOH와 ASOC는 서로 다른 배터리 상태 지표이므로 동일한 값이나 의미로 해석해서는 안 됩니다.
+
+### 문제 해결
+
+프로그램 실행 시 GUI 창이 열리지 않는다면 다음 명령어로 오류를 확인할 수 있습니다.
+
+```powershell
+python "galaxy battery gui.py"
+```
+
+기기가 인식되지 않는 경우 USB 디버깅 허용 여부와 ADB 연결 상태를 확인해야 합니다.
+
+### 배포 파일 및 해시값
+
+배포 파일:
+
+**GalaxyBatteryCheck v1.4.3 Unofficial.zip**
+
+| 항목 | 값 |
+| --- | --- |
+| 파일 크기 | 160,110바이트 |
+| MD5 | `913215e82baae2d2c1e5e69067fccf27` |
+| SHA-1 | `bae73577aef5d6ef0277ce5e9dcea5e0fdc9edd8` |
+| SHA-256 | `fe049082707e95be2a265458847000bf14c2323ef2720745bfd04464fad0b0e9` |
+
+PowerShell에서 SHA-256 검증:
+
+```powershell
+Get-FileHash -Algorithm SHA256 ".\GalaxyBatteryCheck v1.4.3 Unofficial.zip"
+```
+
+위 해시값은 해당 배포 ZIP에만 적용됩니다.
+
+**VirusTotal 분석 결과**
+
+[Galaxy Battery Check v1.4.3 VirusTotal 결과 확인](https://www.virustotal.com/gui/file/fe049082707e95be2a265458847000bf14c2323ef2720745bfd04464fad0b0e9/details)
+
+VirusTotal 분석 결과는 참고 자료이며 프로그램의 안전성을 완전히 보증하는 것은 아닙니다.
+
+### 후원
+
+Galaxy Battery Check는 개인 개발자가 독립적으로 개발하고 유지보수하는 프로그램입니다.
+
+- 제작자: **Sakai (꿈을꾸는 파랑새)**
+- 블로그: https://wezard4u.tistory.com/
+- 투네이션: https://toon.at/donate/637833976686140024
+- Ko-fi: https://ko-fi.com/sakai38666
+
+후원은 선택 사항이며 프로그램 사용에 영향을 주지 않습니다.
+
+### 저작권 및 면책 안내
+
+**© 2026 꿈을꾸는 파랑새. All rights reserved.**
+
+Samsung 및 Galaxy는 삼성전자의 상표입니다.
+
+본 프로그램은 삼성전자와 관계없이 독립적으로 제작한 비공식 소프트웨어입니다.
+
+프로그램에서 제공하는 배터리 진단 정보는 참고용이며, 정확한 배터리 상태 확인이 필요한 경우 삼성전자 공식 서비스센터 또는 해당 지역의 공식 지원·수리 창구를 이용하시기 바랍니다.
+
+별도의 오픈소스 라이선스는 부여하지 않았으며, 소스 코드가 공개되어 있다는 사실만으로 수정·재배포·상업적 사용 권한이 허용되는 것은 아닙니다.
+
+자세한 내용은 `NOTICE.txt`를 참고하시기 바랍니다.
