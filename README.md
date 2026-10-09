@@ -1,3 +1,4 @@
+
 # Galaxy Battery Check
 
 **v1.4.3 | Windows | Python | ADB | Unofficial**
@@ -222,6 +223,45 @@ Galaxy Battery Check is independently developed and maintained.
 
 Donations are entirely optional.
 
+#### ☕ Support Independent Development & Security Research
+
+In addition to developing and maintaining Galaxy Battery Check, I independently research malware, phishing websites, malicious scripts, suspicious files, and other cybersecurity threats.
+
+My technical research and findings are shared through [WEZARD4U'S BLOG](https://wezard4u.tistory.com/).
+
+My work includes analyzing suspicious files, investigating phishing infrastructure, documenting technical findings, and sharing information that may help improve cybersecurity awareness.
+
+I also contribute to Korean localization of open-source software when time permits.
+
+Maintaining these activities requires development and analysis tools, testing environments, storage, technical documentation, and ongoing maintenance.
+
+If Galaxy Battery Check or my cybersecurity research has been useful to you, you can support my independent work.
+
+<a href="https://ko-fi.com/sakai38666">
+  <img
+    src="https://raw.githubusercontent.com/M26Pershing90mm/M26Pershing90mm/main/%EB%B0%A4%EC%9D%98%20%EC%9C%84%ED%98%91%20%EB%B6%84%EC%84%9D%EC%8B%A4.png"
+    width="100%"
+    alt="Support independent cybersecurity research on Ko-fi">
+</a>
+
+☕ **Ko-fi:** [Support My Research](https://ko-fi.com/sakai38666)
+
+💛 **Toonation:** [Support via Toonation](https://toon.at/donate/637833976686140024)
+
+For more information about supporting my work:
+
+🌐 [Support Independent Malware & Phishing Analysis — WEZARD4U'S BLOG](https://wezard4u.tistory.com/6259)
+
+Even a small contribution helps support software development, maintenance, cybersecurity research, analysis environments, and technical documentation.
+
+Support is completely optional.
+
+Galaxy Battery Check remains available regardless of donations. My regular security analysis and technical articles will also continue to be shared publicly.
+
+Reading, sharing, or recommending my work is also greatly appreciated.
+
+Thank you for your support.
+
 ### Copyright and Disclaimer
 
 **© 2026 꿈을꾸는 파랑새. All rights reserved.**
@@ -442,6 +482,66 @@ Galaxy Battery Check는 개인 개발자가 독립적으로 개발하고 유지�
 - Ko-fi: https://ko-fi.com/sakai38666
 
 후원은 선택 사항이며 프로그램 사용에 영향을 주지 않습니다.
+
+#### 💙 독립적인 개발 및 보안 연구 후원
+
+저는 Galaxy Battery Check 개발 외에도 악성코드, 피싱 사이트, 악성 스크립트, 의심스러운 파일 등 실제 사이버 위협을 직접 분석하고 있습니다.
+
+분석 과정에서 확인한 기술적인 내용은 [꿈을꾸는 파랑새 블로그](https://wezard4u.tistory.com/)를 통해 공유하고 있습니다.
+
+단순히 악성 여부를 확인하는 것에 그치지 않고 가능한 범위에서 악성코드의 동작 방식, 피싱 사이트 구조, 악성 스크립트 실행 과정, 침해 지표 및 관련 네트워크 인프라 등을 살펴보고 있습니다.
+
+또한 시간이 허락할 때는 오픈소스 소프트웨어의 한국어 번역과 현지화 작업에도 참여하고 있습니다.
+
+이러한 개발과 분석 활동을 지속하기 위해서는 개발 도구, 분석 소프트웨어, 테스트 환경, 분석 자료 저장 공간 및 기술 문서 작성 등에 비용이 발생합니다.
+
+Galaxy Battery Check나 제 보안 분석 글이 도움이 되셨다면 자발적인 후원을 통해 활동을 응원해 주실 수 있습니다.
+
+#### 💙 카카오페이로 응원하기
+
+<img
+  src="https://raw.githubusercontent.com/M26Pershing90mm/M26Pershing90mm/main/kakaopay-qr.png"
+  width="200"
+  alt="카카오페이 후원 QR 코드">
+
+📱 카카오톡 또는 카카오페이에서 위 QR 코드를 스캔하여 후원하실 수 있습니다.
+
+#### ☕ Ko-fi 및 투네이션으로 응원하기
+
+- ☕ **Ko-fi:** [https://ko-fi.com/sakai38666](https://ko-fi.com/sakai38666)
+- 💛 **투네이션:** [https://toon.at/donate/637833976686140024](https://toon.at/donate/637833976686140024)
+
+#### 🔬 후원금 활용
+
+보내주시는 후원은 다음과 같은 활동에 도움이 됩니다.
+
+- 💻 Galaxy Battery Check 개발 및 유지보수
+- 🔬 보안 분석 및 조사
+- 🦠 악성코드 분석
+- 🎣 피싱 사이트 분석
+- 📜 악성 스크립트 분석
+- 🧰 개발 도구 및 분석 소프트웨어
+- 🖥️ 개발 및 보안 분석 환경 유지
+- 💾 분석 자료 및 저장 공간
+- 🌐 블로그 운영
+- 📝 기술 자료 작성
+- 🌏 오픈소스 소프트웨어 한국어 현지화
+
+후원 금액의 크기는 중요하지 않습니다.
+
+커피나 음료 한 잔 정도의 작은 응원도 독립적인 개발과 보안 연구 활동을 계속하는 데 도움이 됩니다.
+
+자세한 후원 안내는 블로그에서도 확인하실 수 있습니다.
+
+🌐 [후원 안내 — 꿈을꾸는 파랑새](https://wezard4u.tistory.com/6259)
+
+**후원은 완전히 선택 사항이며, 후원 여부와 관계없이 Galaxy Battery Check 사용에 제한이 발생하지 않습니다.**
+
+일반적인 보안 분석 글과 기술 정보 역시 계속 공개할 예정입니다.
+
+금전적인 후원 외에도 프로그램을 사용해 주시거나 블로그 글을 읽고 필요한 사람에게 공유해 주시는 것만으로도 큰 도움이 됩니다.
+
+감사합니다. 💙
 
 ### 저작권 및 면책 안내
 
