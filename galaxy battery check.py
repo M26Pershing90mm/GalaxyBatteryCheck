@@ -10,6 +10,9 @@ import argparse
 import ctypes
 import runpy
 import json
+import math
+import shutil
+import tempfile
 import re
 import subprocess
 import sys
@@ -20,7 +23,7 @@ from typing import Any
 
 
 APP_NAME = "Galaxy Battery Check"
-APP_VERSION = "1.4.3"
+APP_VERSION = "1.4.4"
 APP_AUTHOR = "Sakai"
 COPYRIGHT_HOLDER = "꿈을꾸는 파랑새"
 BLOG_URL = "https://wezard4u.tistory.com/"
@@ -64,33 +67,111 @@ def donation_url(language: str | None = None) -> str:
 
 
 class AdbError(RuntimeError):
-    """ADB is missing, disconnected, or returned an error."""
+    """A categorised ADB failure with language-neutral information for the UI."""
+
+    def __init__(self, message: str, code: str = "adb_failed", **details: str) -> None:
+        super().__init__(message)
+        self.code = code
+        self.details = details
+
+
+ADB_ERROR_MESSAGES = {
+    "ko": {
+        "invalid_executable": "ADB 실행 파일을 확인할 수 없습니다. 공식 Android SDK Platform-Tools의 adb.exe를 선택하세요.",
+        "missing_executable": "adb.exe를 찾지 못했습니다. Platform-Tools를 설치하거나 올바른 경로를 선택하세요.",
+        "timeout": "ADB 응답 시간이 초과되었습니다. 연결 상태를 확인한 후 다시 시도하세요.",
+        "output_too_large": "ADB 응답 크기가 제한을 초과했습니다. 연결된 기기 및 ADB 상태를 확인하세요.",
+        "command_failed": "ADB 명령 실행에 실패했습니다. USB 디버깅 승인 및 기기 연결을 확인하세요.",
+        "device_not_listed": "선택한 기기를 ADB 목록에서 찾지 못했습니다. 기기를 다시 검색하세요.",
+        "device_not_ready": "선택한 기기를 사용할 수 없습니다. USB 디버깅 승인 및 연결 상태를 확인하세요.",
+        "multiple_devices": "여러 기기가 연결되어 있습니다. 사용할 기기를 선택하세요.",
+        "no_ready_device": "연결된 기기가 준비되지 않았습니다. USB 디버깅 승인 상태를 확인하세요.",
+        "no_device": "연결된 Android 기기가 없습니다. USB 케이블 및 디버깅 설정을 확인하세요.",
+        "invalid_battery_data": "배터리 정보가 정상적으로 반환되지 않았습니다.",
+        "adb_failed": "ADB 작업에 실패했습니다. 실행 파일과 기기 연결을 확인하세요.",
+    },
+    "en": {
+        "invalid_executable": "The ADB executable is invalid. Select adb.exe from the official Android SDK Platform-Tools.",
+        "missing_executable": "adb.exe was not found. Install Platform-Tools or select the correct file.",
+        "timeout": "ADB timed out. Check the device connection and try again.",
+        "output_too_large": "The ADB response exceeded the size limit. Check the connected device and ADB status.",
+        "command_failed": "The ADB command failed. Check the USB debugging authorization and device connection.",
+        "device_not_listed": "The selected device is not listed by ADB. Scan for devices again.",
+        "device_not_ready": "The selected device is not ready. Check USB debugging authorization and the connection.",
+        "multiple_devices": "Multiple devices are connected. Select the device to use.",
+        "no_ready_device": "No connected device is ready. Check USB debugging authorization.",
+        "no_device": "No Android device is connected. Check the USB cable and debugging settings.",
+        "invalid_battery_data": "The device did not return valid battery information.",
+        "adb_failed": "The ADB operation failed. Check the executable and device connection.",
+    },
+    "ja": {
+        "invalid_executable": "ADB実行ファイルを確認できません。公式Android SDK Platform-Toolsのadb.exeを選択してください。",
+        "missing_executable": "adb.exeが見つかりません。Platform-Toolsを導入するか、正しいファイルを選択してください。",
+        "timeout": "ADBの応答がタイムアウトしました。接続を確認して再試行してください。",
+        "output_too_large": "ADBの応答がサイズ制限を超えました。端末とADBの状態を確認してください。",
+        "command_failed": "ADBコマンドの実行に失敗しました。USBデバッグの許可と接続を確認してください。",
+        "device_not_listed": "選択した端末がADBの一覧にありません。端末を再検索してください。",
+        "device_not_ready": "選択した端末を使用できません。USBデバッグの許可と接続を確認してください。",
+        "multiple_devices": "複数の端末が接続されています。使用する端末を選択してください。",
+        "no_ready_device": "使用可能な端末がありません。USBデバッグの許可を確認してください。",
+        "no_device": "Android端末が接続されていません。USBケーブルとデバッグ設定を確認してください。",
+        "invalid_battery_data": "端末から正常なバッテリー情報が返されませんでした。",
+        "adb_failed": "ADBの処理に失敗しました。実行ファイルと接続を確認してください。",
+    },
+}
+
+
+def localized_adb_error(error: AdbError, language: str = "en") -> str:
+    """Translate known errors without displaying untrusted device output in the GUI."""
+    translations = ADB_ERROR_MESSAGES[language_from_tag(language)]
+    return translations.get(error.code, translations["adb_failed"])
+
+
+MAX_ADB_STDOUT = 2 * 1024 * 1024
+MAX_ADB_STDERR = 256 * 1024
 
 
 def adb_call(adb: str, args: list[str], timeout: int = 12, optional: bool = False) -> str | None:
+    """Run an ADB subprocess without a shell or unbounded RAM output buffers."""
+    if sys.platform == "win32":
+        resolved = shutil.which(adb)
+        if not resolved or Path(resolved).name.casefold() != "adb.exe":
+            raise AdbError("Windows에서는 공식 Platform-Tools의 adb.exe 실행 파일만 지정하세요.", code="invalid_executable")
+        adb = str(Path(resolved).resolve())
     try:
-        result = subprocess.run(
-            [adb, *args],
-            capture_output=True,
-            text=True,
-            encoding="utf-8",
-            errors="replace",
-            timeout=timeout,
-            check=False,
-        )
+        with tempfile.TemporaryFile(mode="w+b") as output, tempfile.TemporaryFile(mode="w+b") as errors:
+            completed = subprocess.run(
+                [adb, *args],
+                stdout=output,
+                stderr=errors,
+                timeout=timeout,
+                check=False,
+                shell=False,
+                # adb.exe is a console program. Hide its transient console on Windows.
+                creationflags=(getattr(subprocess, "CREATE_NO_WINDOW", 0x08000000)
+                               if sys.platform == "win32" else 0),
+            )
+            if completed.returncode != 0 and optional:
+                return None
+            output.seek(0, 2)
+            errors.seek(0, 2)
+            if output.tell() > MAX_ADB_STDOUT or errors.tell() > MAX_ADB_STDERR:
+                if optional:
+                    return None
+                raise AdbError("ADB 응답이 허용된 크기를 초과했습니다.", code="output_too_large")
+            output.seek(0)
+            errors.seek(0)
+            stdout = output.read().decode("utf-8", errors="replace").strip()
+            stderr = errors.read().decode("utf-8", errors="replace").strip()
+            if completed.returncode != 0:
+                raise AdbError(f"ADB 오류: {stderr or stdout or '원인 불명 오류'}", code="command_failed")
+            return stdout
     except FileNotFoundError as exc:
-        raise AdbError("adb 실행 파일을 찾지 못했습니다. Android SDK Platform-Tools를 설치하거나 --adb 경로를 지정하세요.") from exc
+        raise AdbError("adb 실행 파일을 찾지 못했습니다. Android SDK Platform-Tools를 설치하거나 --adb 경로를 지정하세요.", code="missing_executable") from exc
     except subprocess.TimeoutExpired as exc:
         if optional:
             return None
-        raise AdbError(f"ADB 응답 시간 초과: {' '.join(args)}") from exc
-
-    if result.returncode != 0:
-        if optional:
-            return None
-        message = (result.stderr or result.stdout).strip() or "원인 불명 오류"
-        raise AdbError(f"ADB 오류: {message}")
-    return result.stdout.strip()
+        raise AdbError(f"ADB 응답 시간 초과: {' '.join(args)}", code="timeout") from exc
 
 
 def select_device(adb: str, serial: str | None) -> str:
@@ -104,27 +185,33 @@ def select_device(adb: str, serial: str | None) -> str:
 
     if serial is not None:
         if serial not in devices:
-            raise AdbError(f"지정한 기기({serial})가 ADB 목록에 없습니다. adb devices -l 명령으로 확인하세요.")
+            raise AdbError(f"지정한 기기({serial})가 ADB 목록에 없습니다. adb devices -l 명령으로 확인하세요.", code="device_not_listed")
         if devices[serial] != "device":
-            raise AdbError(f"기기 {serial} 상태가 '{devices[serial]}'입니다. 스마트폰에서 USB 디버깅을 허용하세요.")
+            raise AdbError(f"기기 {serial} 상태가 '{devices[serial]}'입니다. 스마트폰에서 USB 디버깅을 허용하세요.", code="device_not_ready")
         return serial
 
     connected = [key for key, state in devices.items() if state == "device"]
     if len(connected) == 1:
         return connected[0]
     if len(connected) > 1:
-        raise AdbError("기기가 여러 대 연결되어 있습니다. --serial SERIAL 옵션으로 하나를 선택하세요.")
+        raise AdbError("기기가 여러 대 연결되어 있습니다. --serial SERIAL 옵션으로 하나를 선택하세요.", code="multiple_devices")
     if devices:
         states = ", ".join(f"{key}={state}" for key, state in devices.items())
-        raise AdbError(f"사용 가능한 기기가 없습니다({states}). USB 디버깅 승인 여부를 확인하세요.")
-    raise AdbError("연결된 Android 기기가 없습니다. USB 케이블과 디버깅 설정을 확인하세요.")
+        raise AdbError(f"사용 가능한 기기가 없습니다({states}). USB 디버깅 승인 여부를 확인하세요.", code="no_ready_device")
+    raise AdbError("연결된 Android 기기가 없습니다. USB 케이블과 디버깅 설정을 확인하세요.", code="no_device")
 
 
 def number_from_field(text: str, field: str) -> float | None:
     """Read a whole-line `field: 98.710` or `field: [99]` value."""
     pattern = rf"(?mi)^\s*{re.escape(field)}\s*:\s*\[?\s*(-?\d+(?:\.\d+)?)"
     match = re.search(pattern, text)
-    return float(match.group(1)) if match else None
+    if not match or len(match.group(1)) > 64:
+        return None
+    try:
+        value = float(match.group(1))
+    except ValueError:
+        return None
+    return value if math.isfinite(value) else None
 
 
 def percentage(text: str, field: str) -> float | None:
@@ -186,7 +273,13 @@ def read_sysfs(adb: str, serial: str, filename: str) -> float | None:
     if output is None:
         return None
     match = re.fullmatch(r"\s*(-?\d+(?:\.\d+)?)\s*", output)
-    return float(match.group(1)) if match else None
+    if not match or len(match.group(1)) > 64:
+        return None
+    try:
+        value = float(match.group(1))
+    except ValueError:
+        return None
+    return value if math.isfinite(value) else None
 
 
 def mah_from_sysfs(value: float | None) -> float | None:
@@ -202,7 +295,7 @@ def collect(adb: str, serial: str, rated_mah: float | None, skip_sysfs: bool) ->
     raw = adb_call(adb, [*prefix, "dumpsys", "battery"], timeout=20)
     assert raw is not None
     if not raw or "level" not in raw.lower():
-        raise AdbError("배터리 데이터가 정상적으로 반환되지 않았습니다.")
+        raise AdbError("배터리 데이터가 정상적으로 반환되지 않았습니다.", code="invalid_battery_data")
 
     battery = parse_dump(raw)
 
@@ -259,7 +352,60 @@ def collect(adb: str, serial: str, rated_mah: float | None, skip_sysfs: bool) ->
     }
 
 
-def display(report: dict[str, Any]) -> None:
+def report_for_export(report: dict[str, Any], include_serial: bool = False) -> dict[str, Any]:
+    """Privacy-safe JSON export without mutating the original diagnostic data."""
+    if include_serial:
+        return report
+    return {
+        **report,
+        "device": {**report["device"], "serial": "REDACTED"},
+    }
+
+
+CLI_TEXT = {
+    "ko": {
+        "error_prefix": "오류", "rated_error": "--rated-mah는 100~30000 범위의 mAh 값이어야 합니다.",
+        "browser_open": "브라우저로 열기: {url}",
+        "browser_failed": "브라우저를 자동으로 열지 못했습니다. 직접 열어주세요: {url}",
+        "saved": "JSON 파일 저장: {path}",
+        "warnings": (
+            "비공식 독립 개발 도구이며 삼성전자에서 승인·인증한 프로그램이 아닙니다.",
+            "BSOH/ASOC는 기기 보고값이며 정밀 실측치가 아닙니다.",
+            "충전량 역산은 참고용으로, BSOH/ASOC 대체값이 아닙니다.",
+            "최고 온도와 최초 사용일의 기록 범위는 보장되지 않습니다.",
+            "표시되지 않는 필드는 지원하지 않거나 읽기 권한이 없을 수 있습니다.",
+        ),
+    },
+    "en": {
+        "error_prefix": "Error", "rated_error": "--rated-mah must be between 100 and 30000 mAh.",
+        "browser_open": "Opening in browser: {url}",
+        "browser_failed": "Could not open the browser automatically. Open this URL manually: {url}",
+        "saved": "JSON report saved: {path}",
+        "warnings": (
+            "This is independent, unofficial software; it is not approved or certified by Samsung Electronics.",
+            "BSOH/ASOC values are reported by the device, not measured in a laboratory.",
+            "Extrapolated charge capacity is for reference only and does not replace BSOH/ASOC.",
+            "The coverage of the maximum-temperature and first-use records is not guaranteed.",
+            "Unavailable fields may not be supported or accessible on this device.",
+        ),
+    },
+    "ja": {
+        "error_prefix": "エラー", "rated_error": "--rated-mahには100～30000 mAhの値を指定してください。",
+        "browser_open": "ブラウザーで開く: {url}",
+        "browser_failed": "ブラウザーを自動的に開けません。手動で開いてください: {url}",
+        "saved": "JSONファイルを保存しました: {path}",
+        "warnings": (
+            "本ソフトは非公式の個人開発ツールであり、Samsung Electronicsの承認・認定を受けていません。",
+            "BSOH/ASOCは端末が報告した値で、精密測定値ではありません。",
+            "充電量からの容量推定は参考値であり、BSOH/ASOCの代替値ではありません。",
+            "最高温度と初回使用日の記録範囲は保証されません。",
+            "表示できない項目は、端末が非対応または読み取り権限がない場合があります。",
+        ),
+    },
+}
+
+
+def display(report: dict[str, Any], language: str = "ko") -> None:
     device = report["device"]
     battery = report["battery"]
 
@@ -293,11 +439,8 @@ def display(report: dict[str, Any]) -> None:
     if battery["rated_capacity_mah"] is not None:
         print(f"정격 용량 대비 추정: {fmt('extrapolated_to_rated_pct', '%')}")
     print("-" * 52)
-    print("※ 비공식 독립 개발 도구이며 삼성전자에서 승인·인증한 프로그램이 아닙니다.")
-    print("※ BSOH/ASOC는 기기 보고값이며 정밀 실측치가 아닙니다.")
-    print("※ 충전량 역산은 참고용으로, BSOH/ASOC 대체값이 아닙니다.")
-    print("※ 최고 온도와 최초 사용일의 기록 범위는 보장되지 않습니다.")
-    print("※ 표시되지 않는 필드는 지원하지 않거나 읽기 권한이 없을 수 있습니다.")
+    for warning in CLI_TEXT[language_from_tag(language)]["warnings"]:
+        print(f"※ {warning}")
     print(f"블로그: {BLOG_URL}")
     print(f"후원 페이지: {report['application']['donation_url']}")
 
@@ -321,17 +464,21 @@ def main() -> int:
     parser.add_argument("--rated-mah", type=float, help="기기 사양의 정격 용량(mAh), 간이 추정치 비교에만 사용")
     parser.add_argument("--no-sysfs", action="store_true", help="추가 sysfs 조회를 건너뛰고 dumpsys만 사용")
     parser.add_argument("--json", action="store_true", help="사람용 요약 대신 JSON 출력")
+    parser.add_argument("--include-serial", action="store_true", help="JSON에 기기 시리얼번호 포함 (기본값: 숨김)")
+    parser.add_argument("--overwrite", action="store_true", help="--save 지정 파일이 이미 존재하면 덮어쓰기")
     parser.add_argument("--save", type=Path, metavar="FILE", help="결과를 JSON 파일로 저장")
     args = parser.parse_args()
+    cli_language = args.language or windows_display_language()
+    cli_text = CLI_TEXT[cli_language]
     if args.donate or args.blog:
         url = donation_url(args.language) if args.donate else BLOG_URL
-        print(f"브라우저로 열기: {url}")
+        print(cli_text["browser_open"].format(url=url))
         if not webbrowser.open_new_tab(url):
-            print(f"브라우저를 자동으로 열지 못했습니다. 주소를 직접 열어주세요: {url}", file=sys.stderr)
+            print(cli_text["browser_failed"].format(url=url), file=sys.stderr)
             return 1
         return 0
-    if args.rated_mah is not None and not 100 <= args.rated_mah <= 30000:
-        parser.error("--rated-mah는 100~30000 범위의 mAh 값이어야 합니다.")
+    if args.rated_mah is not None and (not math.isfinite(args.rated_mah) or not 100 <= args.rated_mah <= 30000):
+        parser.error(cli_text["rated_error"])
 
     if not args.json:
         print(f"{APP_NAME} (Unofficial) v{APP_VERSION}")
@@ -341,17 +488,28 @@ def main() -> int:
     try:
         serial = select_device(args.adb, args.serial)
         report = collect(args.adb, serial, args.rated_mah, args.no_sysfs)
-        encoded = json.dumps(report, ensure_ascii=False, indent=2)
+        encoded = json.dumps(report_for_export(report, args.include_serial), ensure_ascii=False, indent=2)
         if args.json:
             print(encoded)
         else:
-            display(report)
+            display(report, cli_language)
         if args.save:
-            args.save.write_text(encoded + "\n", encoding="utf-8")
-            print(f"JSON 파일 저장: {args.save}", file=sys.stderr)
+            with args.save.open("w" if args.overwrite else "x", encoding="utf-8") as handle:
+                handle.write(encoded + "\n")
+            print(cli_text["saved"].format(path=args.save), file=sys.stderr)
         return 0
     except (AdbError, OSError) as exc:
-        print(f"오류: {exc}", file=sys.stderr)
+        locale = cli_language
+        if isinstance(exc, AdbError):
+            detail = localized_adb_error(exc, locale)
+        elif locale == "ja":
+            detail = "ファイルにアクセスできないか、ADBを実行できません。アクセス権を確認してください。"
+        elif locale == "en":
+            detail = "Unable to access a file or run ADB. Check permissions."
+        else:
+            detail = "파일에 접근하거나 ADB를 실행하지 못했습니다. 권한을 확인하세요."
+        prefix = cli_text["error_prefix"]
+        print(f"{prefix}: {detail}", file=sys.stderr)
         return 1
 
 
