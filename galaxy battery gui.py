@@ -38,18 +38,27 @@ STRINGS = {
         "notice": "BSOH·ASOC는 기기가 보고한 값이며 정밀 실측치가 아닙니다. 지원하지 않는 항목은 확인 불가로 표시됩니다.",
         "privacy": "진단 데이터는 PC에서 처리되며, 후원 버튼은 별도 브라우저를 엽니다.",
         "support": "후원은 선택 사항입니다.", "donate": "♥ 후원하기 (투네이션)",
-        "save": "JSON 저장", "none": "확인 불가", "idle": "USB 디버깅을 켜고 휴대전화를 연결하세요.",
+        "save": "JSON 저장", "include_serial": "JSON에 시리얼번호 포함", "adb_file_invalid": "공식 Platform-Tools의 adb.exe 파일을 선택하세요.", "none": "확인 불가", "idle": "USB 디버깅을 켜고 휴대전화를 연결하세요.",
         "scanning": "ADB 기기 검색 중…", "reading": "배터리 정보를 조회하는 중…",
         "found": "연결된 기기: {count}대", "no_device": "ADB로 연결된 기기가 없습니다.",
         "done": "배터리 정보 조회 완료 · 읽기 전용", "no_adb": "ADB가 없습니다. Platform-Tools를 설치하거나 ADB 경로를 선택하세요.",
-        "unauthorized": "USB 디버깅 승인을 확인하세요: {detail}", "error": "조회 실패: {detail}",
+        "unauthorized": "ADB 기기 사용 불가: {detail}", "error": "조회 실패: {detail}",
         "missing_device_title": "기기 선택", "missing_device": "기기 검색 후 스마트폰을 선택하세요.",
         "rated_title": "입력 오류", "rated_error": "정격 용량은 100~30000 mAh 범위로 입력하세요.",
         "browser_error_title": "브라우저 실행 실패", "browser_error": "브라우저에서 다음 주소를 열어 주세요:\n{url}",
         "save_title": "배터리 조회 결과 저장", "save_failed": "저장 실패", "saved": "결과를 저장했습니다: {filename}",
         "adb_title": "ADB 실행 파일 선택", "author": "제작자: Sakai (클릭하면 블로그 방문)", "copyright": "© 2026 꿈을꾸는 파랑새. All rights reserved.",
         "warning": "주의: 이 프로그램의 배터리 진단 결과는 참고용입니다. 정확한 배터리 상태를 확인하려면 삼성전자 서비스센터를 방문해 주세요.",
-        "cycles": "회", "auto_hint": "Windows 표시 언어를 자동으로 적용합니다."
+        "cycles": "회", "auto_hint": "Windows 표시 언어를 자동으로 적용합니다.",
+        "error_permission": '파일 접근 권한이 없습니다. 저장 위치 또는 파일 권한을 확인하세요.',
+        "error_file_system": '파일을 저장하거나 읽지 못했습니다. 폴더 및 파일 상태를 확인하세요.',
+        "error_generic": '작업 중 오류가 발생했습니다. ADB 연결 상태를 확인하세요.',
+        "save_permission": '선택한 위치에 저장할 권한이 없습니다. 다른 폴더를 선택하세요.',
+        "save_os": '파일을 저장하지 못했습니다. 저장 위치와 디스크 상태를 확인하세요.',
+        "save_invalid": '진단 데이터를 JSON으로 저장하지 못했습니다.',
+        "device_unauthorized": '승인 필요',
+        "device_offline": '오프라인',
+        "device_other": '연결 불가'
     },
     "en": {
         "heading": "Galaxy Battery Check (Unofficial)", "subtitle": "ADB connection · Read-only battery diagnostics",
@@ -65,18 +74,27 @@ STRINGS = {
         "notice": "BSOH/ASOC are device-reported, not laboratory measurements. Unsupported fields are marked as unavailable.",
         "privacy": "Diagnostics are processed locally. The donation button opens a separate browser window.",
         "support": "Donations are optional.", "donate": "♥ Support on Ko-fi",
-        "save": "Save JSON", "none": "Unavailable", "idle": "Enable USB debugging and connect your phone.",
+        "save": "Save JSON", "include_serial": "Include serial in JSON", "adb_file_invalid": "Select adb.exe from official Platform-Tools.", "none": "Unavailable", "idle": "Enable USB debugging and connect your phone.",
         "scanning": "Scanning for ADB devices…", "reading": "Reading battery information…",
         "found": "Connected devices: {count}", "no_device": "No connected ADB devices found.",
         "done": "Battery information received · Read-only", "no_adb": "ADB not found. Install Platform-Tools or select the ADB executable.",
-        "unauthorized": "Authorize USB debugging on your phone: {detail}", "error": "Check failed: {detail}",
+        "unauthorized": "ADB device unavailable: {detail}", "error": "Check failed: {detail}",
         "missing_device_title": "Select device", "missing_device": "Search for and select a phone first.",
         "rated_title": "Invalid input", "rated_error": "Enter a rated capacity between 100 and 30000 mAh.",
         "browser_error_title": "Unable to open browser", "browser_error": "Open this URL manually:\n{url}",
         "save_title": "Save battery report", "save_failed": "Save failed", "saved": "Report saved: {filename}",
         "adb_title": "Select ADB executable", "author": "Developer: Sakai (visit blog)", "copyright": "© 2026 꿈을꾸는 파랑새. All rights reserved.",
         "warning": "Caution: Battery diagnostic results from this program are for reference only. For an accurate assessment, please contact Samsung Support or a Samsung-authorized repair provider.",
-        "cycles": "cycles", "auto_hint": "Uses the Windows display language automatically."
+        "cycles": "cycles", "auto_hint": "Uses the Windows display language automatically.",
+        "error_permission": 'Access denied. Check the folder or file permissions.',
+        "error_file_system": 'Unable to read or save a file. Check the folder and file status.',
+        "error_generic": 'An unexpected error occurred. Check the ADB connection.',
+        "save_permission": 'You do not have permission to save here. Choose another folder.',
+        "save_os": 'Unable to save the file. Check the destination and disk status.',
+        "save_invalid": 'Unable to save the diagnostic report as JSON.',
+        "device_unauthorized": 'authorization required',
+        "device_offline": 'offline',
+        "device_other": 'not available'
     },
     "ja": {
         "heading": "Galaxy Battery Check（非公式）", "subtitle": "ADB接続 · 読み取り専用のバッテリー診断",
@@ -92,28 +110,41 @@ STRINGS = {
         "notice": "BSOH・ASOCは端末が報告する値であり、精密測定値ではありません。非対応の項目は取得不可と表示します。",
         "privacy": "診断データはPC内で処理されます。支援ボタンは外部ブラウザーを開きます。",
         "support": "支援は任意です。", "donate": "♥ Ko-fiで支援する",
-        "save": "JSONを保存", "none": "取得不可", "idle": "USBデバッグを有効にしてスマートフォンを接続してください。",
+        "save": "JSONを保存", "include_serial": "JSONにシリアル番号を含める", "adb_file_invalid": "公式Platform-Toolsのadb.exeを選択してください。", "none": "取得不可", "idle": "USBデバッグを有効にしてスマートフォンを接続してください。",
         "scanning": "ADBデバイスを検索中…", "reading": "バッテリー情報を取得中…",
         "found": "接続デバイス: {count}台", "no_device": "ADBで接続されたデバイスがありません。",
         "done": "バッテリー情報の取得完了 · 読み取り専用", "no_adb": "ADBが見つかりません。Platform-Toolsを導入するかADBの場所を選択してください。",
-        "unauthorized": "スマートフォンでUSBデバッグを許可してください: {detail}", "error": "取得失敗: {detail}",
+        "unauthorized": "ADBデバイスを使用できません: {detail}", "error": "取得失敗: {detail}",
         "missing_device_title": "デバイス選択", "missing_device": "デバイスを検索して選択してください。",
         "rated_title": "入力エラー", "rated_error": "定格容量は100～30000 mAhの数値を入力してください。",
         "browser_error_title": "ブラウザーを開けません", "browser_error": "次のURLを手動で開いてください:\n{url}",
         "save_title": "バッテリー診断結果を保存", "save_failed": "保存失敗", "saved": "保存しました: {filename}",
         "adb_title": "ADB実行ファイルを選択", "author": "制作者: Sakai（ブログを開く）", "copyright": "© 2026 꿈을꾸는 파랑새. All rights reserved.",
         "warning": "注意：本プログラムのバッテリー診断結果は参考情報です。正確なバッテリー状態を確認したい場合は、Samsungサポート、またはご利用の通信事業者の修理窓口にご相談ください。",
-        "cycles": "回", "auto_hint": "Windowsの表示言語を自動的に適用します。"
+        "cycles": "回", "auto_hint": "Windowsの表示言語を自動的に適用します。",
+        "error_permission": 'アクセス権がありません。フォルダーやファイルの権限を確認してください。',
+        "error_file_system": 'ファイルの読み書きに失敗しました。保存先とファイルの状態を確認してください。',
+        "error_generic": '予期しないエラーが発生しました。ADBの接続を確認してください。',
+        "save_permission": 'この場所には保存する権限がありません。別のフォルダーを選択してください。',
+        "save_os": 'ファイルを保存できません。保存先とディスクの状態を確認してください。',
+        "save_invalid": '診断データをJSON形式で保存できません。',
+        "device_unauthorized": '承認が必要',
+        "device_offline": 'オフライン',
+        "device_other": '使用不可'
     }
 }
 
 
 def find_adb() -> str:
-    folder = Path(__file__).resolve().parent
-    for candidate in (folder / "platform-tools" / "adb.exe", folder / "adb.exe"):
-        if candidate.is_file():
-            return str(candidate)
-    return shutil.which("adb") or "adb"
+    """Only auto-discover ADB on PATH; never auto-run a same-folder executable."""
+    found = shutil.which("adb")
+    if not found:
+        return ""
+    resolved = Path(found).resolve()
+    app_dir = Path(__file__).resolve().parent
+    if not resolved.is_file() or resolved.parent in {app_dir, app_dir / "platform-tools"}:
+        return ""
+    return str(resolved)
 
 
 class BatteryWindow:
@@ -127,6 +158,8 @@ class BatteryWindow:
         self.busy = False
         self.status_key = "idle"
         self.status_args: dict[str, Any] = {}
+        self.last_error: Exception | None = None
+        self.denied_devices: list[tuple[str, str]] = []
         self.elements: dict[str, Any] = {}
         self.device_serials: list[str] = []
         self.row_names = ["model", "android_version", "level_pct", "temperature_c", "max_temperature_c", "first_use_date", "cycle_count", "charge_counter_mah", "extrapolated_full_mah", "extrapolated_to_rated_pct"]
@@ -163,6 +196,9 @@ class BatteryWindow:
         ttk.Label(status_line, textvariable=self.status_var, style="Footer.TLabel", wraplength=590).pack(side="left", fill="x", expand=True)
         self.elements["save"] = ttk.Button(status_line, command=self.save, state="disabled")
         self.elements["save"].pack(side="right", padx=(12, 0))
+        self.include_serial_var = tk.BooleanVar(value=False)
+        self.elements["include_serial"] = ttk.Checkbutton(status_line, variable=self.include_serial_var)
+        self.elements["include_serial"].pack(side="right", padx=(8, 0))
 
         action_line = ttk.Frame(footer)
         action_line.pack(fill="x")
@@ -304,7 +340,10 @@ class BatteryWindow:
         self.elements["privacy"].pack(fill="x", pady=(1, 7))
         self.translate()
         root.after(100, self.process_results)
-        root.after(350, self.scan)
+        if self.adb_var.get():
+            root.after(350, self.scan)
+        else:
+            self.set_status("no_adb")
 
     def load_icon(self) -> None:
         icon = Path(__file__).with_name("galaxy battery check.ico")
@@ -327,7 +366,30 @@ class BatteryWindow:
 
     def set_status(self, key: str, **args: Any) -> None:
         self.status_key, self.status_args = key, args
+        if key != "error":
+            self.last_error = None
         self.status_var.set(self.t(key, **args))
+
+    def error_message(self, exc: Exception) -> str:
+        if isinstance(exc, CORE.AdbError):
+            return CORE.localized_adb_error(exc, self.language)
+        if isinstance(exc, FileNotFoundError):
+            return self.t("no_adb")
+        if isinstance(exc, PermissionError):
+            return self.t("error_permission")
+        if isinstance(exc, OSError):
+            return self.t("error_file_system")
+        return self.t("error_generic")
+
+    def denied_description(self) -> str:
+        names = {
+            "unauthorized": self.t("device_unauthorized"),
+            "offline": self.t("device_offline"),
+        }
+        return ", ".join(
+            f"{serial} ({names.get(state, self.t('device_other'))})"
+            for serial, state in self.denied_devices
+        )
 
     def translate(self) -> None:
         self.root.title(f"{self.t('heading')} v{CORE.APP_VERSION} · {CORE.COPYRIGHT_HOLDER}")
@@ -342,7 +404,12 @@ class BatteryWindow:
             label.configure(text=self.t(key))
         for key in self.row_names:
             self.table.item(key, text=self.t(key))
-        self.set_status(self.status_key, **self.status_args)
+        if self.status_key == "error" and self.last_error is not None:
+            self.set_status("error", detail=self.error_message(self.last_error))
+        elif self.status_key == "unauthorized" and self.denied_devices:
+            self.set_status("unauthorized", detail=self.denied_description())
+        else:
+            self.set_status(self.status_key, **self.status_args)
         if self.data is not None:
             self.render(self.data)
 
@@ -368,6 +435,9 @@ class BatteryWindow:
     def browse_adb(self) -> None:
         path = filedialog.askopenfilename(title=self.t("adb_title"), filetypes=[("ADB", "adb.exe"), ("All files", "*.*")])
         if path:
+            if sys.platform == "win32" and Path(path).name.casefold() != "adb.exe":
+                messagebox.showwarning(self.t("adb_title"), self.t("adb_file_invalid"))
+                return
             self.adb_var.set(path)
             self.scan()
 
@@ -389,8 +459,11 @@ class BatteryWindow:
 
     def scan(self) -> None:
         self.set_status("scanning")
-        adb = self.adb_var.get().strip() or "adb"
-        def work() -> tuple[list[str], list[str]]:
+        adb = self.adb_var.get().strip()
+        if not adb:
+            self.set_status("no_adb")
+            return
+        def work() -> tuple[list[str], list[tuple[str, str]]]:
             output = CORE.adb_call(adb, ["devices", "-l"])
             connected, denied = [], []
             for line in (output or "").splitlines()[1:]:
@@ -399,7 +472,7 @@ class BatteryWindow:
                     if parts[1] == "device":
                         connected.append(parts[0])
                     else:
-                        denied.append(f"{parts[0]} ({parts[1]})")
+                        denied.append((parts[0], parts[1]))
             return connected, denied
         self.start_job("scan", work)
 
@@ -417,7 +490,10 @@ class BatteryWindow:
             messagebox.showwarning(self.t("rated_title"), self.t("rated_error"))
             return
         self.set_status("reading")
-        adb = self.adb_var.get().strip() or "adb"
+        adb = self.adb_var.get().strip()
+        if not adb:
+            self.set_status("no_adb")
+            return
         self.start_job("check", lambda: CORE.collect(adb, serial, rated, skip_sysfs=False))
 
     def process_results(self) -> None:
@@ -426,20 +502,18 @@ class BatteryWindow:
                 action, value = self.results.get_nowait()
                 self.set_busy(False)
                 if action == "error":
-                    message = str(value)
-                    if isinstance(value, FileNotFoundError) or "adb 실행 파일을 찾지 못" in message:
-                        self.set_status("no_adb")
-                    else:
-                        self.set_status("error", detail=message)
+                    self.last_error = value
+                    self.set_status("error", detail=self.error_message(value))
                 elif action == "scan":
                     connected, denied = value
+                    self.denied_devices = denied
                     current = self.device_var.get()
                     self.devices["values"] = connected
                     self.device_var.set(current if current in connected else (connected[0] if connected else ""))
                     if connected:
                         self.set_status("found", count=len(connected))
                     elif denied:
-                        self.set_status("unauthorized", detail=", ".join(denied))
+                        self.set_status("unauthorized", detail=self.denied_description())
                     else:
                         self.set_status("no_device")
                 elif action == "check":
@@ -486,18 +560,28 @@ class BatteryWindow:
         if not dest:
             return
         try:
-            report = json.loads(json.dumps(self.data, ensure_ascii=False))
+            report = json.loads(json.dumps(CORE.report_for_export(self.data, self.include_serial_var.get()), ensure_ascii=False))
             report["application"]["donation_url"] = CORE.donation_url(self.language)
             Path(dest).write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-        except (OSError, ValueError) as exc:
-            messagebox.showerror(self.t("save_failed"), str(exc))
+        except PermissionError:
+            messagebox.showerror(self.t("save_failed"), self.t("save_permission"))
+            return
+        except OSError:
+            messagebox.showerror(self.t("save_failed"), self.t("save_os"))
+            return
+        except (ValueError, TypeError):
+            messagebox.showerror(self.t("save_failed"), self.t("save_invalid"))
             return
         self.set_status("saved", filename=Path(dest).name)
 
 
 def main() -> None:
     root = tk.Tk()
+    # Prevent a partially constructed Tk window from flashing at startup.
+    root.withdraw()
     BatteryWindow(root)
+    root.update_idletasks()
+    root.deiconify()
     root.mainloop()
 
 
