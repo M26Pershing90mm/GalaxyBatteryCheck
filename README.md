@@ -1,11 +1,11 @@
 
 # Galaxy Battery Check
 
-**v1.4.3 | Windows | Python | ADB | Unofficial**
+**v1.4.4 | Windows | Python | ADB | Unofficial**
 
 [English](#english) | [한국어](#한국어)
 
-![Galaxy Battery Check v1.4.3 screenshot](galaxy-battery-check.png)
+![Galaxy Battery Check application screenshot](galaxy-battery-check.png)
 
 *Actual application screenshot on Windows. Displayed values depend on the connected device and firmware.*
 
@@ -29,6 +29,17 @@ It can display BSOH, ASOC, charge cycles, battery temperature, and other availab
 - **ADB device selection:** Supports selecting an ADB executable and discovering connected devices.
 - **JSON export:** Saves collected information to a JSON file.
 - **Multilingual GUI:** Korean, English, and Japanese, with automatic Windows display-language detection and manual selection.
+
+### What's New in v1.4.4 — Security and Usability Update
+
+- **Reduced Windows console flicker:** Hide the transient ADB console window and show the GUI after its initial layout is ready.
+- **Localized errors and warnings:** Improved Korean, English, and Japanese messages for ADB connection failures, timeouts, access errors, and other supported error conditions.
+- **Safer ADB execution:** Strengthened executable path checks and disabled automatic execution of an `adb.exe` placed next to the program.
+- **Improved response validation:** Limited ADB output sizes and strengthened invalid numeric value handling.
+- **Privacy-conscious JSON export:** Device serial numbers are hidden by default; choose to include them in the GUI or use `--include-serial` in the CLI.
+- **CLI overwrite protection:** Existing output files are not overwritten without the explicit `--overwrite` flag.
+
+Existing battery inspection features remain available. The information supported still depends on the device and firmware.
 
 ### Requirements and Downloads
 
@@ -187,9 +198,34 @@ If the device is not detected, verify its ADB connection and USB debugging autho
 
 ### Release File and Checksums
 
-The following information applies specifically to:
+#### v1.4.4 — Current release
 
-**GalaxyBatteryCheck v1.4.3 Unofficial.zip**
+**File:** `galaxy battery.zip`
+
+| Item | Value |
+| --- | --- |
+| File size | Approximately 1 MB |
+| MD5 | `0bf767f7cca1a4a1c1713a7f7090cf6f` |
+| SHA-1 | `c5a45979bc6e96471d13b00fa012643fa878e2e6` |
+| SHA-256 | `d6041c71a348567d09fdf9d1fe567f458bdd28f96e4ee94bc499eeda6e2b367b` |
+
+The checksums above were verified by the developer for the v1.4.4 distribution ZIP.
+
+Verify SHA-256 with PowerShell:
+
+```powershell
+Get-FileHash -Algorithm SHA256 ".\\galaxy battery.zip"
+```
+
+**VirusTotal Analysis**
+
+[Galaxy Battery Check v1.4.4 VirusTotal report](https://www.virustotal.com/gui/file/d6041c71a348567d09fdf9d1fe567f458bdd28f96e4ee94bc499eeda6e2b367b?nocache=1)
+
+VirusTotal results are provided for reference and do not guarantee that a file is free from malicious software.
+
+#### v1.4.3 — Previous release (reference)
+
+**File:** `GalaxyBatteryCheck v1.4.3 Unofficial.zip`
 
 | Item | Value |
 | --- | --- |
@@ -198,19 +234,9 @@ The following information applies specifically to:
 | SHA-1 | `bae73577aef5d6ef0277ce5e9dcea5e0fdc9edd8` |
 | SHA-256 | `fe049082707e95be2a265458847000bf14c2323ef2720745bfd04464fad0b0e9` |
 
-Verify the SHA-256 checksum using PowerShell:
+[View the v1.4.3 VirusTotal analysis](https://www.virustotal.com/gui/file/fe049082707e95be2a265458847000bf14c2323ef2720745bfd04464fad0b0e9/details)
 
-```powershell
-Get-FileHash -Algorithm SHA256 ".\GalaxyBatteryCheck v1.4.3 Unofficial.zip"
-```
-
-These checksums do not apply to GitHub's automatically generated source archives.
-
-**VirusTotal Analysis**
-
-[View the file analysis on VirusTotal](https://www.virustotal.com/gui/file/fe049082707e95be2a265458847000bf14c2323ef2720745bfd04464fad0b0e9/details)
-
-VirusTotal scan results are provided for reference and do not guarantee that a file is free from malicious software.
+Each checksum applies only to the corresponding named ZIP archive, not GitHub's automatically generated source archives.
 
 ### Support
 
@@ -298,6 +324,17 @@ BSOH, ASOC, 충전 사이클, 배터리 온도 등의 정보를 조회하고 결
 - **ADB 기기 검색:** 연결된 기기를 검색하고 사용할 기기를 선택할 수 있습니다.
 - **JSON 저장:** 조회 결과를 JSON 파일로 저장할 수 있습니다.
 - **다국어 지원:** 한국어, 영어, 일본어를 지원하며 Windows 표시 언어 자동 감지와 수동 변경 기능을 제공합니다.
+
+### v1.4.4 변경 사항 — 보안 및 사용성 개선
+
+- **Windows 콘솔 창 깜빡임 완화:** ADB 실행 시 나타나는 별도 콘솔 창을 숨기고 GUI 초기 화면 구성이 끝난 뒤 창을 표시합니다.
+- **오류 및 경고 다국어 지원:** ADB 연결 실패, 응답 시간 초과, 권한 문제 등 지원되는 오류 메시지를 한국어·영어·일본어로 표시하도록 개선했습니다.
+- **ADB 실행 파일 검증 강화:** 경로 검사를 보완하고 프로그램 폴더의 `adb.exe`를 자동 실행하지 않도록 수정했습니다.
+- **ADB 응답 검증 강화:** 출력 크기 제한과 비정상적인 숫자값 처리 기능을 보완했습니다.
+- **JSON 개인정보 보호:** 보고서의 기기 시리얼번호를 기본적으로 숨깁니다. GUI 선택란이나 CLI의 `--include-serial` 옵션으로 필요한 경우에만 포함합니다.
+- **CLI 파일 덮어쓰기 방지:** 기존 파일을 기본적으로 덮어쓰지 않으며 `--overwrite` 옵션을 지정해야 덮어쓸 수 있습니다.
+
+기존 배터리 정보 조회 기능은 유지됩니다. 기기와 펌웨어에 따라 조회 가능한 정보는 달라질 수 있습니다.
 
 ### 실행 환경 및 필요한 프로그램
 
@@ -447,9 +484,34 @@ python "galaxy battery gui.py"
 
 ### 배포 파일 및 해시값
 
-배포 파일:
+#### v1.4.4 — 최신 배포 파일
 
-**GalaxyBatteryCheck v1.4.3 Unofficial.zip**
+**파일명:** `galaxy battery.zip`
+
+| 항목 | 값 |
+| --- | --- |
+| 파일 크기 | 약 1 MB |
+| MD5 | `0bf767f7cca1a4a1c1713a7f7090cf6f` |
+| SHA-1 | `c5a45979bc6e96471d13b00fa012643fa878e2e6` |
+| SHA-256 | `d6041c71a348567d09fdf9d1fe567f458bdd28f96e4ee94bc499eeda6e2b367b` |
+
+위 해시값은 개발자가 v1.4.4 배포 ZIP을 직접 검증한 값입니다.
+
+PowerShell에서 SHA-256 확인:
+
+```powershell
+Get-FileHash -Algorithm SHA256 ".\\galaxy battery.zip"
+```
+
+**VirusTotal 분석 결과**
+
+[Galaxy Battery Check v1.4.4 VirusTotal 결과 확인](https://www.virustotal.com/gui/file/d6041c71a348567d09fdf9d1fe567f458bdd28f96e4ee94bc499eeda6e2b367b?nocache=1)
+
+VirusTotal 결과는 참고 자료이며 파일의 안전성을 완전히 보증하는 것은 아닙니다.
+
+#### v1.4.3 — 이전 배포 파일 (참고 기록)
+
+**파일명:** `GalaxyBatteryCheck v1.4.3 Unofficial.zip`
 
 | 항목 | 값 |
 | --- | --- |
@@ -458,19 +520,9 @@ python "galaxy battery gui.py"
 | SHA-1 | `bae73577aef5d6ef0277ce5e9dcea5e0fdc9edd8` |
 | SHA-256 | `fe049082707e95be2a265458847000bf14c2323ef2720745bfd04464fad0b0e9` |
 
-PowerShell에서 SHA-256 검증:
-
-```powershell
-Get-FileHash -Algorithm SHA256 ".\GalaxyBatteryCheck v1.4.3 Unofficial.zip"
-```
-
-위 해시값은 해당 배포 ZIP에만 적용됩니다.
-
-**VirusTotal 분석 결과**
-
 [Galaxy Battery Check v1.4.3 VirusTotal 결과 확인](https://www.virustotal.com/gui/file/fe049082707e95be2a265458847000bf14c2323ef2720745bfd04464fad0b0e9/details)
 
-VirusTotal 분석 결과는 참고 자료이며 프로그램의 안전성을 완전히 보증하는 것은 아닙니다.
+각 해시값은 해당 배포 ZIP 파일에만 적용되며, GitHub가 자동 생성한 소스 압축 파일에는 적용되지 않습니다.
 
 ### 후원
 
