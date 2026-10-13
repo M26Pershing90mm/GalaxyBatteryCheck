@@ -1,5 +1,7 @@
 
-# Galaxy Battery Check
+# Galaxy Battery Check – Samsung Galaxy Battery Health Checker (ADB, Windows)
+
+**삼성 갤럭시 배터리 상태·수명 확인 프로그램 | BSOH · ASOC · 충전 사이클 · 배터리 온도**
 
 **v1.4.4 | Windows | Python | ADB | Unofficial**
 
@@ -13,7 +15,7 @@
 
 ## English
 
-Galaxy Battery Check is an unofficial Windows utility that displays battery information reported by Samsung Galaxy devices through ADB (Android Debug Bridge).
+Galaxy Battery Check is an unofficial Samsung Galaxy battery health checker for Windows. It uses ADB (Android Debug Bridge) to display battery status information reported by compatible Galaxy devices.
 
 It can display BSOH, ASOC, charge cycles, battery temperature, and other available data, with an option to save results as JSON. Root access is not required.
 
@@ -306,7 +308,7 @@ See `NOTICE.txt` for additional information.
 
 ## 한국어
 
-Galaxy Battery Check는 삼성 갤럭시 스마트폰이 ADB(Android Debug Bridge)를 통해 제공하는 배터리 정보를 확인할 수 있도록 제작한 Windows용 비공식 프로그램입니다.
+Galaxy Battery Check는 Windows에서 ADB(Android Debug Bridge)를 이용해 삼성 갤럭시 스마트폰의 배터리 상태와 수명 관련 정보를 확인하는 비공식 배터리 점검 프로그램입니다.
 
 BSOH, ASOC, 충전 사이클, 배터리 온도 등의 정보를 조회하고 결과를 JSON 파일로 저장할 수 있습니다.
 
